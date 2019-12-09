@@ -86,15 +86,8 @@ route.post("/refresh_token", async (req, res) => {
   sendRefreshToken(res, refreshToken);
   return res.status(200).json({ accessToken });
 });
-route.post("/protected", async (req, res) => {
-  try {
-    const userId = isAuth(req);
-    if (userId !== null) {
-      res.status(200).send("protected");
-    }
-  } catch (error) {
-    res.status(401).json({ error: "Unauthorized" });
-  }
+route.get("/protected", isAuth, async (req, res) => {
+  res.status(200).json({ success: "rac ginda" });
 });
 route.post("/logout", (req, res) => {
   res.clearCookie("refreshToken", { path: "/api/auth/refresh_token" });

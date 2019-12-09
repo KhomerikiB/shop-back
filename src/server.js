@@ -3,9 +3,9 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const { verify } = require("jsonwebtoken");
 const authRoute = require("./routes/auth");
 const itemRoute = require("./routes/items");
+const cartRoute = require("./routes/carts");
 const app = express();
 
 // connect to MONGOOSE
@@ -34,6 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRoute);
 app.use("/api/item", itemRoute);
+app.use("/api/cart", cartRoute);
 app.listen(process.env.PORT, () => {
   console.log("SERVER IS LISTENING", process.env.PORT);
 });
