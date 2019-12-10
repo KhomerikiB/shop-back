@@ -62,7 +62,6 @@ route.post("/login", async (req, res) => {
 });
 route.post("/refresh_token", async (req, res) => {
   const token = req.cookies.refreshToken;
-  console.log(token);
   if (!token) return res.send({ accessToken: "" });
   let payload = null;
 

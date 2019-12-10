@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const authRoute = require("./routes/auth");
 const itemRoute = require("./routes/items");
 const cartRoute = require("./routes/carts");
+const categoryRoute = require("./routes/category");
 const app = express();
 
 // connect to MONGOOSE
@@ -16,7 +17,7 @@ mongoose.connect(
     console.log("CONNECTED TO DB");
   }
 );
-
+mongoose.set("useFindAndModify", false);
 // MIDDLEWARES
 
 app.use(cookieParser());
@@ -35,6 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRoute);
 app.use("/api/item", itemRoute);
 app.use("/api/cart", cartRoute);
+app.use("/api/category", categoryRoute);
 app.listen(process.env.PORT, () => {
   console.log("SERVER IS LISTENING", process.env.PORT);
 });

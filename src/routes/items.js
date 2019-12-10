@@ -1,15 +1,28 @@
 const route = require("express").Router();
 const Item = require("../modules/Item");
+const { isAuth } = require("../middleware/isAuth");
+
 // ADD ITEM
-route.post("/", async (req, res) => {
-  const { brand, type, description, modelId, price, images } = req.body;
+route.post("/", isAuth, async (req, res) => {
+  const {
+    brand,
+    type,
+    description,
+    modelId,
+    price,
+    images,
+    title,
+    quantity
+  } = req.body;
   const item = new Item({
     brand,
     type,
     description,
     modelId,
     price,
-    images: [...images]
+    images: [...images],
+    title,
+    quantity
   });
   try {
     const result = await item.save();

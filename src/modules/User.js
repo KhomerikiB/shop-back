@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema({
       productId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Item"
+      },
+      quantity: {
+        type: Number,
+        defualt: 0
       }
     }
   ]
