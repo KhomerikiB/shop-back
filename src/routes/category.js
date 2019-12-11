@@ -2,7 +2,7 @@ const route = require("express").Router();
 const Category = require("../modules/Category");
 const { isAuth } = require("../middleware/isAuth");
 
-// ADD ITEM
+// ADD CATEGORY
 route.post("/", isAuth, async (req, res) => {
   const { name } = req.body;
   const category = new Category({
@@ -15,7 +15,7 @@ route.post("/", isAuth, async (req, res) => {
     return res.status(403).json({ error: error });
   }
 });
-// GET ALL ITEMS
+// GET ALL CATEGORY
 route.get("/", async (req, res) => {
   try {
     const categories = await Category.find();
@@ -24,7 +24,8 @@ route.get("/", async (req, res) => {
     return res.json({ error });
   }
 });
-route.delete("/:categoryId", async (req, res) => {
+// DELETE CATEGORY BY ID
+route.delete("/:categoryId", isAuth, async (req, res) => {
   const id = req.params.categoryId;
   try {
     await Category.deleteOne({ _id: id });

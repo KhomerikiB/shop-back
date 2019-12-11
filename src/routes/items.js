@@ -6,7 +6,7 @@ const { isAuth } = require("../middleware/isAuth");
 route.post("/", isAuth, async (req, res) => {
   const {
     brand,
-    type,
+    category,
     description,
     modelId,
     price,
@@ -16,11 +16,11 @@ route.post("/", isAuth, async (req, res) => {
   } = req.body;
   const item = new Item({
     brand,
-    type,
+    category,
     description,
     modelId,
     price,
-    images: [...images],
+    images,
     title,
     quantity
   });
@@ -34,7 +34,7 @@ route.post("/", isAuth, async (req, res) => {
 // GET ALL ITEMS
 route.get("/", async (req, res) => {
   try {
-    const allItems = await Item.find();
+    const allItems = await Item.find().populate("category");
     return res.status(200).json({ data: allItems });
   } catch (error) {
     return res.json({ error });
@@ -45,6 +45,18 @@ route.get("/:itemId", async (req, res) => {
   const id = req.params.itemId;
   try {
     const item = await Item.findById(id);
+    if (!item) return res.status(200).json({ error: "item not found" });
+    return res.status(200).json({ data: item });
+  } catch (error) {
+    return res.json({ error });
+  }
+});
+
+// GET ITEM BY CATEGORY ID
+route.get("/categoryId/:categoryId", async (req, res) => {
+  const id = req.params.categoryId;
+  try {
+    const item = await Item.findOne({ category: id });
     if (!item) return res.status(200).json({ error: "item not found" });
     return res.status(200).json({ data: item });
   } catch (error) {

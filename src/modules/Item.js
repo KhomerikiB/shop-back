@@ -4,10 +4,9 @@ const itemSchema = new mongoose.Schema({
   brand: {
     type: String
   },
-  // WILL REFER TO CATEGORIES ID
-  type: {
-    type: String,
-    required: true
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category"
   },
   description: {
     type: String,
