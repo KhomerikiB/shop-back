@@ -69,7 +69,7 @@ route.post("/refresh_token", async (req, res) => {
     payload = verify(token, process.env.REFRESH_TOKEN_SECRET);
     console.log(payload);
   } catch (error) {
-    return res.send({ accessToken: "asfa" });
+    return res.send({ accessToken: "" });
   }
   const user = await User.findById(payload.userId);
   if (!user) {

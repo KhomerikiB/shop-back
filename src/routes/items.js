@@ -56,9 +56,22 @@ route.get("/:itemId", async (req, res) => {
 route.get("/categoryId/:categoryId", async (req, res) => {
   const id = req.params.categoryId;
   try {
-    const item = await Item.findOne({ category: id });
+    const item = await Item.find({ category: id });
     if (!item) return res.status(200).json({ error: "item not found" });
     return res.status(200).json({ data: item });
+  } catch (error) {
+    return res.json({ error });
+  }
+});
+// SEARCH ITEM BY NAME
+route.get("/search/:text", async (req, res) => {
+  const text = req.params.text;
+  try {
+    const regText = new RegExp(text, "i"); // 'i' makes it case insensitive
+    const result = await Item.find({
+      $or: [{ description: regText }, { title: regText }, { brand: regText }]
+    });
+    res.status(200).json({ result });
   } catch (error) {
     return res.json({ error });
   }
