@@ -67,7 +67,6 @@ route.post("/refresh_token", async (req, res) => {
 
   try {
     payload = verify(token, process.env.REFRESH_TOKEN_SECRET);
-    console.log(payload);
   } catch (error) {
     return res.send({ accessToken: "" });
   }

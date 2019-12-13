@@ -19,7 +19,7 @@ route.post("/", isAuth, async (req, res) => {
     category,
     description,
     modelId,
-    price,
+    price: price.toFixed(2),
     images,
     title,
     quantity
@@ -65,15 +65,28 @@ route.get("/categoryId/:categoryId", async (req, res) => {
 });
 // SEARCH ITEM BY NAME
 route.get("/search/:text", async (req, res) => {
+  const fullInfo = req.body.type;
   const text = req.params.text;
-  try {
-    const regText = new RegExp(text, "i"); // 'i' makes it case insensitive
-    const result = await Item.find({
-      $or: [{ description: regText }, { title: regText }, { brand: regText }]
-    });
-    res.status(200).json({ result });
-  } catch (error) {
-    return res.json({ error });
+  if (fullInfo) {
+    try {
+      const regText = new RegExp(text, "i"); // 'i' makes it case insensitive
+      const result = await Item.find({
+        $or: [{ description: regText }, { title: regText }, { brand: regText }]
+      });
+      res.status(200).json({ result });
+    } catch (error) {
+      return res.json({ error });
+    }
+  } else {
+    try {
+      const regText = new RegExp(text, "i"); // 'i' makes it case insensitive
+      const result = await Item.find({
+        $or: [{ description: regText }, { title: regText }, { brand: regText }]
+      }).select("title");
+      res.status(200).json({ result });
+    } catch (error) {
+      return res.json({ error });
+    }
   }
 });
 module.exports = route;
