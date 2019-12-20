@@ -19,7 +19,7 @@ route.post("/", isAuth, async (req, res) => {
     category,
     description,
     modelId,
-    price: price.toFixed(2),
+    price: parseInt(price).toFixed(2),
     images,
     title,
     quantity
@@ -34,7 +34,8 @@ route.post("/", isAuth, async (req, res) => {
 // GET ALL ITEMS
 route.get("/", async (req, res) => {
   try {
-    const allItems = await Item.find().populate("category");
+    // const allItems = await Item.find().populate("category");
+    const allItems = await Item.find();
     return res.status(200).json({ data: allItems });
   } catch (error) {
     return res.json({ error });
@@ -52,12 +53,18 @@ route.get("/:itemId", async (req, res) => {
   }
 });
 
-// GET ITEM BY CATEGORY ID
-route.get("/categoryId/:categoryId", async (req, res) => {
-  const id = req.params.categoryId;
+// GET ITEMS BY CATEGORY ID
+route.get("/category/id", async (req, res) => {
+  const { id, itemId } = req.query;
   try {
     const item = await Item.find({ category: id });
     if (!item) return res.status(200).json({ error: "item not found" });
+    if (typeof itemId !== "undefined") {
+      const items = item.filter(_item => {
+        return _item.id !== itemId;
+      });
+      return res.status(200).json({ data: items });
+    }
     return res.status(200).json({ data: item });
   } catch (error) {
     return res.json({ error });
